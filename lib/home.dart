@@ -1,31 +1,64 @@
+import 'package:experience_pages/components/SpaceDivider.dart';
 import 'package:experience_pages/constants/uri.dart';
 import 'package:flutter/material.dart';
-import 'components/link.dart';
+import 'components/Button.dart';
 import 'constants/meta_data.dart';
 import 'dart:js' as js;
 
 import 'experience.dart';
 
-final experiences = [
-  ExperienceData(
-      title: exp1Title,
-      periodLocation: exp1PeriodLocation,
-      desc: exp1Description,
-      stacks: exp1Stacks),
-  ExperienceData(
-      title: exp2Title,
-      periodLocation: exp2PeriodLocation,
-      desc: exp2Description,
-      stacks: exp2Stacks),
-  ExperienceData(
-      title: exp3Title,
-      periodLocation: exp3PeriodLocation,
-      desc: exp3Description,
-      stacks: exp3Stacks)
-];
-
 class Home extends StatelessWidget {
   const Home({super.key});
+
+  Widget buildAppBar() => SliverAppBar(
+        collapsedHeight: 30,
+        toolbarHeight: 30,
+        automaticallyImplyLeading: true,
+        forceElevated: true,
+        leadingWidth: double.maxFinite,
+        leading: Expanded(
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text('My Resume', style: TextStyle(fontWeight: FontWeight.bold, fontFeatures: [FontFeature.oldstyleFigures()]),),
+            ),
+          ),
+        ),
+        actions: [
+          // const SizedBox(width: 8),
+          LinkButton.icon(
+            icon: Icons.web_rounded,
+            text: 'Github',
+            onPressed: () => launchUriSubmission(githubLink),
+          ),
+          // const SizedBox(width: 8),
+          LinkButton.icon(
+            icon: Icons.social_distance_rounded,
+            text: 'LinkedIn',
+            onPressed: () => launchUriSubmission(linkedInLink),
+          ),
+          // const SizedBox(width: 8),
+          LinkButton.icon(
+            icon: Icons.analytics_rounded,
+            text: 'StackOverflow',
+            onPressed: () => launchUriSubmission(stackOverflowLink),
+          ),
+        ],
+      );
+
+  Widget buildResume({required children}) => SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            ),
+          ),
+        ),
+      );
 
   void launchUriSubmission(String url) async {
     js.context.callMethod('open', [url]);
@@ -33,73 +66,56 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.white70,
-        child: Column(
-          children: [
-            Container(
-              height: 32,
-              color: Colors.white60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const SizedBox(width: 8),
-                  TransparentTextButton.icon(
-                    icon: Icons.web_rounded,
-                    text: 'Github',
-                    onPressed: () => launchUriSubmission(githubLink),
-                  ),
-                  const SizedBox(width: 8),
-                  TransparentTextButton.icon(
-                    icon: Icons.social_distance_rounded,
-                    text: 'LinkedIn',
-                    onPressed: () => launchUriSubmission(linkedInLink),
-                  ),
-                  const SizedBox(width: 8),
-                  TransparentTextButton.icon(
-                    icon: Icons.analytics_rounded,
-                    text: 'StackOverflow',
-                    onPressed: () => launchUriSubmission(stackOverflowLink),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Container(
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      body: SelectionArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.white70,
+          child: Column(
+            children: [
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    buildAppBar(),
+                    buildResume(children: [
+                      const Text(name, style: TextStyle(fontSize: 32)),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TransparentTextButton(
-                              text: name,
-                              textStyle: const TextStyle(fontSize: 32),
-                              onPressed: () {}),
-                          const Text(role),
-                          const SizedBox(
-                            height: 24,
+                          Text(baseLocation),
+                          SizedBox(
+                            width: 8,
                           ),
-                          const Text(shortDescription),
-                          const SizedBox(
-                            height: 24,
+                          Text(tel),
+                          SizedBox(
+                            width: 8,
                           ),
-                          ExperienceSection(experiences: experiences)
+                          Text(email),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(linkedInLink)
                         ],
                       ),
-                    ),
-                  )
-                ],
+                      const Text(role),
+                      const SpaceDivider(),
+                      const Text(
+                        'Professional Summary',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      const Text(shortDescription),
+                      const SpaceDivider(),
+                      ExperienceSection(experiences: experiences)
+                    ])
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

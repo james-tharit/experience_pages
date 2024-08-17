@@ -1,3 +1,4 @@
+import 'package:experience_pages/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:experience_pages/home.dart';
@@ -13,17 +14,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ExperienceBlogs',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white12),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: stateGray,
+            primary: stateGray,
+            secondary: darkStateGray,
+            tertiary: battleshipGray),
         useMaterial3: true,
       ),
       home: const Home(),
     );
   }
 }
-
-
-
-
