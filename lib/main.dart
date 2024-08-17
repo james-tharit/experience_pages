@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             primary: stateGray,
             secondary: darkStateGray,
             tertiary: battleshipGray),
-        useMaterial3: true,
+        useMaterial3: false,
       ),
       home: const Home(),
     );
