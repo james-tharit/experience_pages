@@ -13,8 +13,7 @@ class Home extends StatelessWidget {
   Widget buildAppBar() => SliverAppBar(
         collapsedHeight: 30,
         toolbarHeight: 30,
-        automaticallyImplyLeading: true,
-        forceElevated: true,
+        automaticallyImplyLeading: false,
         leadingWidth: double.maxFinite,
         leading: Expanded(
           child: Container(
